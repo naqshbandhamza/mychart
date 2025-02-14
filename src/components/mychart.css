@@ -2,3 +2,7 @@
     height: 600px;
     width: 100%;
 }
+
+canvas[data-element="dynamicObjectsCanvas"]{
+    visibility: visible;
+}
