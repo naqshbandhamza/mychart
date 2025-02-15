@@ -122,9 +122,10 @@ const MyChart = () => {
       const container = document.getElementById('chart_container');
       const myc1 = container.querySelector('[data-element="crossToolCanvas"]');
 
+
       myc1.addEventListener("click", (e) => {
-        let c_p = canvasInputListener.getCurrentPoint();
-        console.log(c_p);
+        //let c_p = canvasInputListener.getCurrentPoint();
+        //console.log(c_p);
           if (isTrendLine.current) {
             console.log("on click")
             let ctx = contextRef.current;
@@ -134,6 +135,7 @@ const MyChart = () => {
             getpoints({x,y});
           }
         });
+      
 
     //   myc1.addEventListener("mousedown", (event) => {
     //       isDragging.current = true;
