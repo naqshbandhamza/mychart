@@ -4,7 +4,6 @@ import { createChart } from "@devexperts/dxcharts-lite";
 import generateCandlesData from '@devexperts/dxcharts-lite/dist/chart/utils/candles-generator.utils';
 import { CanvasInputListenerComponent } from '@devexperts/dxcharts-lite/dist/chart/inputlisteners/canvas-input-listener.component';
 import EventBus from '@devexperts/dxcharts-lite/dist/chart/events/event-bus';
-import {drawLine} from '@devexperts/dxcharts-lite/dist/chart/utils/canvas/canvas-drawing-functions.utils';
 
 const MyChart = () => {
 
@@ -136,36 +135,36 @@ const MyChart = () => {
           }
         });
 
-      myc1.addEventListener("mousedown", (event) => {
-          isDragging.current = true;
-          prevX.current = event.offsetX;
-          prevY.current = event.offsetY;
-      });
+    //   myc1.addEventListener("mousedown", (event) => {
+    //       isDragging.current = true;
+    //       prevX.current = event.offsetX;
+    //       prevY.current = event.offsetY;
+    //   });
 
-      myc1.addEventListener("mousemove", (event) => {
-        if (!isDragging.current) return;
+    //   myc1.addEventListener("mousemove", (event) => {
+    //     if (!isDragging.current) return;
     
-        let currentX = event.offsetX;
-        let currentY = event.offsetY;
+    //     let currentX = event.offsetX;
+    //     let currentY = event.offsetY;
 
-        //this.origin_x = this.sketch.mouseX + (this.origin_x - this.sketch.pmouseX)
-        //this.origin_y = this.sketch.mouseY + (this.origin_y - this.sketch.pmouseY)
+    //     //this.origin_x = this.sketch.mouseX + (this.origin_x - this.sketch.pmouseX)
+    //     //this.origin_y = this.sketch.mouseY + (this.origin_y - this.sketch.pmouseY)
 
-        originRef.current.origin_x = currentX + (originRef.current.origin_x - prevX.current);
-        originRef.current.origin_y = currentY + (originRef.current.origin_y - prevY.current);
+    //     originRef.current.origin_x = currentX + (originRef.current.origin_x - prevX.current);
+    //     originRef.current.origin_y = currentY + (originRef.current.origin_y - prevY.current);
         
-        // Update previous coordinates
-        prevX.current = currentX;
-        prevY.current = currentY;
-    });
+    //     // Update previous coordinates
+    //     prevX.current = currentX;
+    //     prevY.current = currentY;
+    // });
     
-    myc1.addEventListener("mouseup", () => {
-        isDragging.current = false;
-    });
+    // myc1.addEventListener("mouseup", () => {
+    //     isDragging.current = false;
+    // });
     
-    myc1.addEventListener("mouseleave", () => {
-        isDragging.current = false;
-    });
+    // myc1.addEventListener("mouseleave", () => {
+    //     isDragging.current = false;
+    // });
     }
 
     return () => {
