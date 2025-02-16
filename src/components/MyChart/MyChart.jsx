@@ -109,9 +109,9 @@ const MyChart = () => {
 
     chart.drawingManager.addDrawerAfter(customDrawer, 'trendLineDrawer', 'DYNAMIC_OBJECTS');  
 
-    console.log(chart.hitTestCanvasModel.canvasInputListener)
+    //console.log(chart.hitTestCanvasModel.canvasInputListener)
   
-    console.log(chart)
+    //console.log(chart)
 
 
 
@@ -131,16 +131,11 @@ const MyChart = () => {
       //   origin_x:canvasRef.current.width/2,
       //   origin_y:canvasRef.current.height/2
       // }
-  
-      //console.log(originRef.current)
-
-      //const eventBus = new EventBus();
-      //const canvasInputListener = new CanvasInputListenerComponent(eventBus, canvasRef.current);
-      //canvasInputListenerRef.current = canvasInputListener;
-      //canvasInputListener.doActivate();
 
       const container = document.getElementById('chart_container');
       const myc1 = container.querySelector('[data-element="crossToolCanvas"]');
+
+      console.log(myc1);
 
 
       myc1.addEventListener("click", (e) => {
