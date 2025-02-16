@@ -124,7 +124,7 @@ const MyChart = () => {
 
   React.useEffect(()=>{
 
-    if(canvasRef.current){      
+    
 
       
       // originRef.current = {
@@ -181,11 +181,7 @@ const MyChart = () => {
     // myc1.addEventListener("mouseleave", () => {
     //     isDragging.current = false;
     // });
-    }
-
-    return () => {
-      
-    };
+    
 
   },[])
 
