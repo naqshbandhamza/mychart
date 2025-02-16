@@ -2,8 +2,10 @@ import React, { useRef, useEffect } from 'react';
 import "./mychart.css";
 import { createChart } from "@devexperts/dxcharts-lite";
 import generateCandlesData from '@devexperts/dxcharts-lite/dist/chart/utils/candles-generator.utils';
-import { CanvasInputListenerComponent } from '@devexperts/dxcharts-lite/dist/chart/inputlisteners/canvas-input-listener.component';
-import EventBus from '@devexperts/dxcharts-lite/dist/chart/events/event-bus';
+import { getDefaultConfig } from '@devexperts/dxcharts-lite/dist/chart/chart.config';
+//import { CanvasInputListenerComponent } from '@devexperts/dxcharts-lite/dist/chart/inputlisteners/canvas-input-listener.component';
+//import EventBus from '@devexperts/dxcharts-lite/dist/chart/events/event-bus';
+import { CanvasBoundsContainer } from '@devexperts/dxcharts-lite/dist/chart/canvas/canvas-bounds-container';
 
 const MyChart = () => {
 
@@ -52,25 +54,35 @@ const MyChart = () => {
     const myc1 = container.querySelector('[data-element="crossToolCanvas"]');
     canvasRef.current = myc1;
 
-    const configWithDisabledAxes = {
-      components: {
-        yAxis: {
-          visible: true, // disable yAxis
-        },
-        xAxis: {
-          visible: true, // disable xAxis
-        },
-        // crossTool: {
-        //   type: 'none', // disable CrossTool
-        // },
-      },
-    };
-    const chart = createChart(container,configWithDisabledAxes);
+    // const configWithDisabledAxes = {
+    //   components: {
+    //     yAxis: {
+    //       visible: true, // disable yAxis
+    //     },
+    //     xAxis: {
+    //       visible: true, // disable xAxis
+    //     },
+    //     // crossTool: {
+    //     //   type: 'none', // disable CrossTool
+    //     // },
+    //   },
+    // };
+    
+    const getdc = getDefaultConfig();
+
+    getdc.rtl = true;
+
+    //console.log(getdc)
+    
+    const chart = createChart(container,getdc);
     chartRef.current = chart;
     const candles = generateCandlesData();
     chart.setData({ candles });
-    console.log({candles})
-    chart.setChartType("line");
+    //console.log({candles})
+    //chart.setChartType("line");
+    chart.setCrossToolVisible("none");
+    chart.enableUserControls();
+    chart.setGridVisible(false);
 
     const customDrawer = {
       draw() {
@@ -95,7 +107,15 @@ const MyChart = () => {
       },
     };
 
-    chart.drawingManager.addDrawerAfter(customDrawer, 'trendLineDrawer', 'DYNAMIC_OBJECTS');    
+    chart.drawingManager.addDrawerAfter(customDrawer, 'trendLineDrawer', 'DYNAMIC_OBJECTS');  
+
+    console.log(chart.hitTestCanvasModel.canvasInputListener)
+  
+    console.log(chart)
+
+
+
+
 
     const context = chart.dynamicObjectsCanvasModel.ctx;
     contextRef.current = context;
@@ -112,20 +132,18 @@ const MyChart = () => {
       //   origin_y:canvasRef.current.height/2
       // }
   
-      console.log(originRef.current)
+      //console.log(originRef.current)
 
-      const eventBus = new EventBus();
-      const canvasInputListener = new CanvasInputListenerComponent(eventBus, canvasRef.current);
-      canvasInputListenerRef.current = canvasInputListener;
-      canvasInputListener.doActivate();
+      //const eventBus = new EventBus();
+      //const canvasInputListener = new CanvasInputListenerComponent(eventBus, canvasRef.current);
+      //canvasInputListenerRef.current = canvasInputListener;
+      //canvasInputListener.doActivate();
 
       const container = document.getElementById('chart_container');
       const myc1 = container.querySelector('[data-element="crossToolCanvas"]');
 
 
       myc1.addEventListener("click", (e) => {
-        //let c_p = canvasInputListener.getCurrentPoint();
-        //console.log(c_p);
           if (isTrendLine.current) {
             console.log("on click")
             let ctx = contextRef.current;

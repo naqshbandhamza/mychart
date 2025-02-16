@@ -1,5 +1,5 @@
 import React,{useRef} from "react";
-import Canvas from "../components/Canvas";
+import Canvas from "../components/Canvas/Canvas";
 
 
 const MyPage = () => {

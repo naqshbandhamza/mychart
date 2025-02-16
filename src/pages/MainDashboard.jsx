@@ -1,5 +1,5 @@
 import React from "react";
-import MyChart from "../components/MyChart";
+import MyChart from "../components/MyChart/MyChart";
 
 const MainDashboard = ()=>{
 

@@ -10,7 +10,6 @@ function App() {
     <Routes>
       <Route path="/" element={<MainDashboard/>} />
       <Route path="/my" element={<MyPage/>} />
-
     </Routes>
   </Router>
   );
