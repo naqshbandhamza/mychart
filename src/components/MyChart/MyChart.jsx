@@ -144,6 +144,7 @@ const MyChart = () => {
 
 
       myc1.addEventListener("click", (e) => {
+        console.log("clicked")
           if (isTrendLine.current) {
             console.log("on click")
             let ctx = contextRef.current;
