@@ -187,7 +187,7 @@ const MyChart = () => {
       
     };
 
-  },[canvasRef])
+  },[])
 
   return (
     <>
