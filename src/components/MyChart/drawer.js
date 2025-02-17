@@ -95,7 +95,7 @@ export default class CustomCrosstoolDrawer {
 			// X hover
 			const x = hover.x;
 			const y = hover.y;
-            console.log(y)
+            //console.log(y)
 			// use can use here your own formatter
 			const labelText = this.chartModel.pane.regularFormatter(this.chartModel.priceFromY(y));
 			const width = ctx.measureText(labelText).width;
