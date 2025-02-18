@@ -14,12 +14,10 @@ const MyChart = () => {
   const isTrendLine = useRef(false);
   const chartRef = useRef(null);
   const candlesRef = useRef(null);
-
-  const okref = useRef(null);
+  const mouseRef = useRef(null);
 
   const getpoints = (position) => {
     const myp = new VisualSeriesPoint(position.x, position.y);
-    console.log(myp);
     pointsRef.current.push(myp);
   }
 
@@ -33,6 +31,15 @@ const MyChart = () => {
         ctx.strokeStyle = 'blue';
         ctx.stroke();
         ctx.closePath();
+      } else {
+        if (mouseRef.current && pointsRef.current.length%2!==0 && i===pointsRef.current.length-1) {
+          ctx.beginPath();
+          ctx.moveTo(pointsRef.current[i].x(chartRef.current.scale), pointsRef.current[i].y(chartRef.current.scale));
+          ctx.lineTo(mouseRef.current.x, mouseRef.current.y);
+          ctx.strokeStyle = 'yellow';
+          ctx.stroke();
+          ctx.closePath();
+        }
       }
 
       ctx.beginPath();
@@ -50,7 +57,6 @@ const MyChart = () => {
     canvasRef.current = myc1;
 
     const getdc = getDefaultConfig();
-    getdc.rtl = true;
 
     const chart = createChart(container, getdc);
     chartRef.current = chart;
@@ -92,14 +98,6 @@ const MyChart = () => {
       ),
     );
 
-    okref.current = new CustomCrosstoolDrawer(
-      chart.config,
-      chart.bounds,
-      chart.chartModel,
-      chart.paneManager,
-    );
-
-
     const context = chart.dynamicObjectsCanvasModel.ctx;
     contextRef.current = context;
 
@@ -119,6 +117,17 @@ const MyChart = () => {
       // console.log(minTimestamp, maxTimestamp);
       //console.log(minClose, maxClose);
 
+      // Capture mouse movement on the canvas
+      myc1.addEventListener('mousemove', (event) => {
+        const rect = myc1.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        mouseRef.current = {
+          x, y
+        }
+
+      });
+
       myc1.addEventListener("click", (e) => {
 
         //console.log(chartRef.current.crossToolComponent.observeCrossToolChanged().observed)
@@ -136,7 +145,7 @@ const MyChart = () => {
         //console.log(scaleX,scaleY)
 
         console.log("clicked")
-        if (isTrendLine.current) {
+        if (isTrendLine.current && chartRef.current.crosshair.observeCrossToolChanged().value!==null) {
           //let c_p = chartRef.current.canvasInputListener.getCurrentPoint();
           let yop = chartRef.current.chartModel.priceFromY(chartRef.current.crosshair.observeCrossToolChanged().value.y);
           let xop = chartRef.current.chartModel.fromX(chartRef.current.crosshair.observeCrossToolChanged().value.x);
@@ -158,7 +167,7 @@ const MyChart = () => {
 
           // getpoints(c_p);
           //console.log({ x, y })
-          getpoints({ x:xop, y:yop })
+          getpoints({ x: xop, y: yop })
 
         }
       });
