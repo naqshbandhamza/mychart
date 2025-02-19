@@ -19,6 +19,7 @@ const MyChart = () => {
   const getpoints = (position) => {
     const myp = new VisualSeriesPoint(position.x, position.y);
     pointsRef.current.push(myp);
+    drawTrendLines(chartRef.current.dynamicObjectsCanvasModel.ctx)
   }
 
   const drawTrendLines = (ctx) => {
@@ -79,9 +80,9 @@ const MyChart = () => {
 
     const  draw = ()=>{
         const ctx = chart.backgroundCanvasModel.ctx;
-        if (pointsRef.current.length%2!==0) {
-          ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
           ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
+        if (pointsRef.current.length%2!==0) {
           ctx.beginPath();
           // ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
           ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
