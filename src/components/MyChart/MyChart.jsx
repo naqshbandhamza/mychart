@@ -14,7 +14,7 @@ const MyChart = () => {
   const isTrendLine = useRef(false);
   const chartRef = useRef(null);
   const candlesRef = useRef(null);
-  const mouseRef = useRef(null);
+  const animationFrameRef = useRef(null);
 
   const getpoints = (position) => {
     const myp = new VisualSeriesPoint(position.x, position.y);
@@ -22,6 +22,7 @@ const MyChart = () => {
   }
 
   const drawTrendLines = (ctx) => {
+
     for (let i = 0; i < pointsRef.current.length; i++) {
 
       if (i % 2 === 0 && i < pointsRef.current.length - 1) {
@@ -31,16 +32,7 @@ const MyChart = () => {
         ctx.strokeStyle = 'blue';
         ctx.stroke();
         ctx.closePath();
-      } else {
-        if (pointsRef.current.length%2!==0 && i===pointsRef.current.length-1) {
-          ctx.beginPath();
-          ctx.moveTo(pointsRef.current[i].x(chartRef.current.scale), pointsRef.current[i].y(chartRef.current.scale));
-          ctx.lineTo(chartRef.current.canvasInputListener.getCurrentPoint().x,chartRef.current.canvasInputListener.getCurrentPoint().y)
-          ctx.strokeStyle = 'yellow';
-          ctx.stroke();
-          ctx.closePath();
-        }
-      }
+      } 
 
       ctx.beginPath();
       ctx.arc(pointsRef.current[i].x(chartRef.current.scale), pointsRef.current[i].y(chartRef.current.scale), 5, 0, 2 * Math.PI); // Draw a circle with radius 5 at x, y
@@ -68,23 +60,38 @@ const MyChart = () => {
     const customDrawer = {
       draw() {
         const ctx = chart.dynamicObjectsCanvasModel.ctx;
-        //const series = chart.chartModel.mainCandleSeries.getSeriesInViewport().flat();
-        //const lastCandle = series[series.length - 1];
-        //const startCandle = series[0];
-        // to get actual coordinates for canvas we need to use scaleModel,
-        // since actual coordinates in pixels depends on current zoom level and viewport (scale)
-        //const [x1, y1] = [startCandle.x(chart.scale), startCandle.y(chart.scale)];
-        //const [x2, y2] = [lastCandle.x(chart.scale), lastCandle.y(chart.scale)];
-
-        ctx.save();
+        // if (pointsRef.current.length%2!==0) {
+        //   ctx.beginPath();
+        //   // ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
+        //   ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
+        //   ctx.lineTo(chartRef.current.canvasInputListener.currentPoint.x,chartRef.current.canvasInputListener.currentPoint.y)
+        //   ctx.strokeStyle = 'yellow';
+        //   ctx.stroke();
+        //   ctx.closePath();
+        // }
         drawTrendLines(ctx)
-        ctx.restore();
       },
       // this methods should return ids of canvases which this drawers uses
       getCanvasIds() {
         return [chart.dynamicObjectsCanvasModel.canvasId];
       },
     };
+
+    const  draw = ()=>{
+        const ctx = chart.backgroundCanvasModel.ctx;
+        if (pointsRef.current.length%2!==0) {
+          ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+          ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
+          ctx.beginPath();
+          // ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
+          ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
+          ctx.lineTo(chartRef.current.canvasInputListener.currentPoint.x,chartRef.current.canvasInputListener.currentPoint.y)
+          ctx.strokeStyle = 'yellow';
+          ctx.stroke();
+          ctx.closePath();
+        }
+        animationFrameRef.current = requestAnimationFrame(draw);
+      }
 
     chart.drawingManager.addDrawerAfter(customDrawer, 'trendLineDrawer', 'DYNAMIC_OBJECTS');
 
@@ -101,6 +108,14 @@ const MyChart = () => {
     const context = chart.dynamicObjectsCanvasModel.ctx;
     contextRef.current = context;
 
+   animationFrameRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+
   }, [])
 
   React.useEffect(() => {
@@ -108,25 +123,10 @@ const MyChart = () => {
     const myc1 = container.querySelector('[data-element="crossToolCanvas"]');
 
     if (candlesRef.current) {
-
-      // Capture mouse movement on the canvas
-      // myc1.addEventListener('mousemove', (event) => {
-      //   const rect = myc1.getBoundingClientRect();
-      //   const x = event.clientX - rect.left;
-      //   const y = event.clientY - rect.top;
-      //   mouseRef.current = {
-      //     x, y
-      //   }
-      // });
-
       myc1.addEventListener("click", (e) => {
-
-        console.log("clicked")
         if (isTrendLine.current && chartRef.current.crosshair.observeCrossToolChanged().value!==null) {
           let yop = chartRef.current.chartModel.priceFromY(chartRef.current.crosshair.observeCrossToolChanged().value.y);
           let xop = chartRef.current.chartModel.fromX(chartRef.current.crosshair.observeCrossToolChanged().value.x);
-          //console.log(yop)
-          //console.log(xop)
           getpoints({ x: xop, y: yop })
 
         }
