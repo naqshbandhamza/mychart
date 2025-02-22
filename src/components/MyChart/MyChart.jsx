@@ -33,14 +33,14 @@ const MyChart = () => {
         ctx.beginPath();
         ctx.moveTo(pointsRef.current[i].x(chartRef.current.scale), pointsRef.current[i].y(chartRef.current.scale));
         ctx.lineTo(pointsRef.current[i + 1].x(chartRef.current.scale), pointsRef.current[i + 1].y(chartRef.current.scale));
-        ctx.strokeStyle = 'blue';
+        ctx.strokeStyle = 'yellow';
         ctx.stroke();
         ctx.closePath();
       }
 
       ctx.beginPath();
       ctx.arc(pointsRef.current[i].x(chartRef.current.scale), pointsRef.current[i].y(chartRef.current.scale), 5, 0, 2 * Math.PI); // Draw a circle with radius 5 at x, y
-      ctx.fillStyle = 'red';
+      ctx.fillStyle = 'yellow';
       ctx.fill();
       ctx.closePath();
     }
