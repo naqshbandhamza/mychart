@@ -1,10 +1,18 @@
 #chart_container{
-    height: 600px;
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
+    height: 85vh;
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 8vh;
 }
 
 canvas[data-element="dynamicObjectsCanvas"]{
     visibility: visible;
+}
+
+.bg{
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: #000000;
 }

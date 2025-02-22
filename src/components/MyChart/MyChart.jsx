@@ -61,15 +61,6 @@ const MyChart = () => {
     const customDrawer = {
       draw() {
         const ctx = chart.dynamicObjectsCanvasModel.ctx;
-        // if (pointsRef.current.length%2!==0) {
-        //   ctx.beginPath();
-        //   // ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
-        //   ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
-        //   ctx.lineTo(chartRef.current.canvasInputListener.currentPoint.x,chartRef.current.canvasInputListener.currentPoint.y)
-        //   ctx.strokeStyle = 'yellow';
-        //   ctx.stroke();
-        //   ctx.closePath();
-        // }
         drawTrendLines(ctx)
       },
       // this methods should return ids of canvases which this drawers uses
@@ -138,8 +129,7 @@ const MyChart = () => {
 
   return (
     <>
-      <div>
-        <p>this is my chart</p>
+      <div className='bg'>
         <button onClick={(e) => {
           isTrendLine.current = !isTrendLine.current;
         }}>toggle trendlines</button>
