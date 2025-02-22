@@ -16,3 +16,26 @@ canvas[data-element="dynamicObjectsCanvas"]{
     width: 100%;
     background-color: #000000;
 }
+
+.toolbar{
+    position: absolute;
+    top:8vh;
+    left:2%;
+    height: 85vh;
+    width: 24px;
+    background-color: #141414;
+    border-right-style: solid;
+    border-right-width: 0.5px;
+    border-color: gray;
+}
+
+.toolbar button{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-style: none;
+    margin-top: 5px;
+    height: 20px;
+}

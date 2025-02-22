@@ -5,8 +5,11 @@ import generateCandlesData from '@devexperts/dxcharts-lite/dist/chart/utils/cand
 import { getDefaultConfig } from '@devexperts/dxcharts-lite/dist/chart/chart.config';
 import { VisualSeriesPoint } from '@devexperts/dxcharts-lite/dist/chart/model/data-series.model';
 import CustomCrosstoolDrawer from "./drawer";
+import ToolbarMy from '../toolbar';
 
 const MyChart = () => {
+
+  console.log("my chart rendered")
 
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
@@ -33,7 +36,7 @@ const MyChart = () => {
         ctx.strokeStyle = 'blue';
         ctx.stroke();
         ctx.closePath();
-      } 
+      }
 
       ctx.beginPath();
       ctx.arc(pointsRef.current[i].x(chartRef.current.scale), pointsRef.current[i].y(chartRef.current.scale), 5, 0, 2 * Math.PI); // Draw a circle with radius 5 at x, y
@@ -69,21 +72,21 @@ const MyChart = () => {
       },
     };
 
-    const  draw = ()=>{
-        const ctx = chart.backgroundCanvasModel.ctx;
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-          ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
-        if (pointsRef.current.length%2!==0) {
-          ctx.beginPath();
-          // ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
-          ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
-          ctx.lineTo(chartRef.current.canvasInputListener.currentPoint.x,chartRef.current.canvasInputListener.currentPoint.y)
-          ctx.strokeStyle = 'yellow';
-          ctx.stroke();
-          ctx.closePath();
-        }
-        animationFrameRef.current = requestAnimationFrame(draw);
+    const draw = () => {
+      const ctx = chart.backgroundCanvasModel.ctx;
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      if (pointsRef.current.length % 2 !== 0) {
+        ctx.beginPath();
+        // ctx.moveTo(pointsRef.current[pointsRef.current.length-1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length-1].y(chartRef.current.scale));
+        ctx.moveTo(pointsRef.current[pointsRef.current.length - 1].x(chartRef.current.scale), pointsRef.current[pointsRef.current.length - 1].y(chartRef.current.scale));
+        ctx.lineTo(chartRef.current.canvasInputListener.currentPoint.x, chartRef.current.canvasInputListener.currentPoint.y)
+        ctx.strokeStyle = 'yellow';
+        ctx.stroke();
+        ctx.closePath();
       }
+      animationFrameRef.current = requestAnimationFrame(draw);
+    }
 
     chart.drawingManager.addDrawerAfter(customDrawer, 'trendLineDrawer', 'DYNAMIC_OBJECTS');
 
@@ -100,7 +103,7 @@ const MyChart = () => {
     const context = chart.dynamicObjectsCanvasModel.ctx;
     contextRef.current = context;
 
-   animationFrameRef.current = requestAnimationFrame(draw);
+    animationFrameRef.current = requestAnimationFrame(draw);
 
     return () => {
       if (animationFrameRef.current) {
@@ -116,7 +119,7 @@ const MyChart = () => {
 
     if (candlesRef.current) {
       myc1.addEventListener("click", (e) => {
-        if (isTrendLine.current && chartRef.current.crosshair.observeCrossToolChanged().value!==null) {
+        if (isTrendLine.current && chartRef.current.crosshair.observeCrossToolChanged().value !== null) {
           let yop = chartRef.current.chartModel.priceFromY(chartRef.current.crosshair.observeCrossToolChanged().value.y);
           let xop = chartRef.current.chartModel.fromX(chartRef.current.crosshair.observeCrossToolChanged().value.x);
           getpoints({ x: xop, y: yop })
@@ -130,11 +133,9 @@ const MyChart = () => {
   return (
     <>
       <div className='bg'>
-        <button onClick={(e) => {
-          isTrendLine.current = !isTrendLine.current;
-        }}>toggle trendlines</button>
         <div id="chart_container">
         </div>
+        <ToolbarMy isTrendLine={isTrendLine}/>
       </div>
     </>
   )
